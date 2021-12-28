@@ -1,20 +1,30 @@
-﻿@model Treningi.WebApp.Models.CreateRoleVM
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@model Treningi.WebApp.Models.CreateRoleVM
 
-@{ 
+@{
     ViewBag.Title = "Create New Role";
-}
-<h1>Create New Role</h1>
 
-<div class="row">
-    <div class="col-md-12">
-        <form method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="RoleName"></label>
-                <input asp-for="RoleName" class="form-control" />
-                <span asp-validation-for="RoleName" class="text-danger"></span>
+    <h1>Create New Role</h1>
+
+    if (User.IsInRole("Admin"))
+    {
+        <div class="row">
+            <div class="col-md-12">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="RoleName"></label>
+                        <input asp-for="RoleName" class="form-control" />
+                        <span asp-validation-for="RoleName" class="text-danger"></span>
+                    </div>
+                    <button style="width:auto" type="submit" class="btn btn-primary">Add Role</button>
+                </form>
             </div>
-            <button style="width:auto" type="submit" class="btn btn-primary">Add Role</button>
-        </form>
-    </div>
-</div>
+        </div>
+    }
+    else
+    {
+        <div>Trzeba być Adminem</div>
+    }
+}
