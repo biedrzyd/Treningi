@@ -61,6 +61,9 @@ namespace Treningi.WebApp.Controllers
                 var user = new IdentityUser() { UserName = loginVM.UserName };
                 var result = await _userManager.CreateAsync(user, loginVM.Password);
 
+                //if (user.)
+                //await _userManager.AddToRoleAsync(user, "Admin");
+
                 if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Home"); //(metoda, controller)
@@ -75,5 +78,6 @@ namespace Treningi.WebApp.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
     }
 }
