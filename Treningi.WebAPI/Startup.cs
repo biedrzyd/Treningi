@@ -1,16 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Treningi.Core.Repositories;
+using Treningi.Infrastructure.Repositories;
+using Treningi.Infrastructure.Services;
 
 namespace Treningi.WebAPI
 {
@@ -28,9 +35,38 @@ namespace Treningi.WebAPI
         {
 
             services.AddControllers();
+            services.AddScoped<ICompetitorsRepository, CompetitorsRepository>();
+            services.AddScoped<ICompetitorService, CompetitorService>();
+            services.AddScoped<ICoachesRepository, CoachesRepository>();
+            services.AddScoped<ICoachService, CoachService>();
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Treningi.WebAPI", Version = "v1" });
+            });
+
+            services.AddDbContext<AppDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetConnectionString("TreningiConnectionString")));
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = "http://www.dominikbiedrzycki.pl",
+                    ValidIssuer = "http://www.dominikbiedrzycki.pl",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123"))
+                };
             });
         }
 
@@ -42,6 +78,8 @@ namespace Treningi.WebAPI
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Treningi.WebAPI v1"));
+                app.UseAuthentication();
+                app.UseAuthentication();
             }
 
             app.UseHttpsRedirection();
