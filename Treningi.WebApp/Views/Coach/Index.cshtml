@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Treningi.WebApp.CoachVM>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@model IEnumerable<Treningi.WebApp.CoachVM>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -22,26 +24,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Forename)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date_of_birth)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Forename)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date_of_birth)
+                </td>
+                <td>
+                    @{
+                        if (User.IsInRole("Admin"))
+                        {
+                            @Html.ActionLink("Edit   ", "Edit", new { id = item.ID })
+                            @Html.ActionLink("Details   ", "Details", new { /* id=item.PrimaryKey */ })
+                            @Html.ActionLink("Delete   ", "Delete", new { id = item.ID })
+                        }
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

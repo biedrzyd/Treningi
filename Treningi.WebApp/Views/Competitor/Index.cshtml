@@ -55,9 +55,24 @@
                 @Html.DisplayFor(modelItem => item.Weight)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  id=item.ID }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new {  id=item.ID })
+                @{
+                    if (User.IsInRole("Admin"))
+                    {
+                        @Html.ActionLink("Edit   ", "Edit", new { id = item.ID })
+                        @Html.ActionLink("Details   ", "Details", new { /* id=item.PrimaryKey */ })
+                        @Html.ActionLink("Delete   ", "Delete", new { id = item.ID })
+                    }
+                    else
+                    {
+                        <li class="nav-link text-dark">
+
+
+                            <span style="color:darkgray">*Panel admina</span>
+
+                        </li>
+                    }
+                }
+
             </td>
         </tr>
 }
