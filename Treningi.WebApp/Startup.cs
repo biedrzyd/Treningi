@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Treningi.Infrastructure.Repositories;
+using Treningi.WebApp.Models;
 
 namespace Treningi.WebApp
 {
@@ -26,6 +27,8 @@ namespace Treningi.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<JWToken>();
+            JWToken.Configuration = Configuration;
             services.AddControllersWithViews();
             var myDb = Configuration["ConnectionStrings:DefaultConnection"];
             services.AddDbContext<AppDbContext>(

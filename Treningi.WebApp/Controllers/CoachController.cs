@@ -8,6 +8,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Treningi.WebApp.Controllers
 {
@@ -32,9 +35,11 @@ namespace Treningi.WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             string _restpath = GetHostUrl().Content + CN();
+            var tokenString = GenerateJSONWebToken();
             List<CoachVM> coachList = new List<CoachVM>();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -125,6 +130,28 @@ namespace Treningi.WebApp.Controllers
                 }
             }
             return View(s);
+        }
+        private string GenerateJSONWebToken()
+        {
+            var pass = Configuration["Password:JWToken"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(pass));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim("Name", "Dominik"),
+                new Claim(JwtRegisteredClaimNames.Email, " "),
+            };
+
+            var token = new JwtSecurityToken(
+                issuer: "http://www.dominikbiedrzycki.pl",
+                audience: "http://www.dominikbiedrzycki.pl",
+                expires: DateTime.Now.AddHours(3),
+                signingCredentials: credentials,
+                claims: claims
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

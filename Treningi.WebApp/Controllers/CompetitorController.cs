@@ -133,7 +133,8 @@ namespace Treningi.WebApp.Controllers
 
         private string GenerateJSONWebToken()
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SuperTajneHaslo123"));
+            var pass = Configuration["Password:JWToken"];
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(pass));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
