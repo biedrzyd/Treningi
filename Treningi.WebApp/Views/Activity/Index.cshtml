@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@model IEnumerable<Treningi.WebApp.ActivityVM>
+
+<h4>ActivityVM</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.hour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.day)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.exercise)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hour)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.day)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.exercise)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+<div class="row">
+    Poniedziałek
+</div>
+<div class="row">
+    Wtorek
+</div>
+<div class="row">
+    Środa
+</div>
+<div class="row">
+    Czwartek
+</div>
+<div class="row">
+    Piątek
+</div>
+<div class="row">
+    Sobota
+</div>
+<div class="row">
+    Niedziela
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

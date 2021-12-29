@@ -153,5 +153,46 @@ namespace Treningi.WebApp.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+
+
+
+        public async Task<IActionResult> Details(int id)
+        {
+            string _restpath = GetHostUrl().Content + CN();
+            CompetitorVM s = new CompetitorVM();
+            using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
+            {
+                using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    s = JsonConvert.DeserializeObject<CompetitorVM>(apiResponse);
+                }
+            }
+
+            return View(s);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Details(CompetitorVM s)
+        {
+            string _restpath = GetHostUrl().Content + CN();
+            CompetitorVM sjResult = new CompetitorVM();
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
+                {
+                    string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
+                    var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    using (var response = await httpClient.PutAsync($"{_restpath}/{s.ID}", content))
+                    {
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return View(e);
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

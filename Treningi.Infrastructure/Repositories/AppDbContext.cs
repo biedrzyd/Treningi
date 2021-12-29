@@ -17,5 +17,6 @@ namespace Treningi.Infrastructure.Repositories
 
         public DbSet<Competitor> Competitor { get; set; }
         public DbSet<Coach> Coach { get; set; }
+        public DbSet<Activity> Activity { get; set; }
     }
 }

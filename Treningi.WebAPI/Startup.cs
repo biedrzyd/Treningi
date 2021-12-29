@@ -39,7 +39,8 @@ namespace Treningi.WebAPI
             services.AddScoped<ICompetitorService, CompetitorService>();
             services.AddScoped<ICoachesRepository, CoachesRepository>();
             services.AddScoped<ICoachService, CoachService>();
-
+            services.AddScoped<IActivitiesRepository, ActivitiesRepository>();
+            services.AddScoped<IActivityService, ActivityService>();
 
             services.AddSwaggerGen(c =>
             {
