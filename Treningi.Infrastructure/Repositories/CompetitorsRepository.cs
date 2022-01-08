@@ -66,7 +66,7 @@ namespace Treningi.Infrastructure.Repositories
                 z.Weight = s.Weight;
                 z.Height = s.Height;
                 z.Country = s.Country;
-                z.Coach = s.Coach;
+                z.CoachId = s.CoachId;
                 z.ID = s.ID;
                 _appDbContext.SaveChanges();
             }

@@ -23,7 +23,8 @@ namespace Treningi.Infrastructure.Services
                 ID = x.ID,
                 day = x.day,
                 hour = x.hour,
-                exercise = x.exercise
+                exercise = x.exercise,
+                CompetitorID = x.CompetitorID
             });
         }
         public async Task<ActivityDTO> Get(int givenId)
@@ -34,7 +35,8 @@ namespace Treningi.Infrastructure.Services
                 ID = x.ID,
                 day = x.day,
                 hour = x.hour,
-                exercise = x.exercise
+                exercise = x.exercise,
+                CompetitorID = x.CompetitorID
             });
         }
     }

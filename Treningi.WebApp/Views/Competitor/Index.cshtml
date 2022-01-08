@@ -27,11 +27,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.Weight)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CoachId)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
+                @if (User.IsInRole("Admin") || (User.IsInRole("Trener") && item.CoachId.Equals(User.Identity)))
+                {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ID)
@@ -55,6 +61,9 @@
                 @Html.DisplayFor(modelItem => item.Weight)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.CoachId)
+            </td>
+            <td>
                 @{
                     if (User.IsInRole("Admin"))
                     {
@@ -64,17 +73,13 @@
                     }
                     else
                     {
-                        <li class="nav-link text-dark">
-
-
-                            <span style="color:darkgray">*Panel admina</span>
-
-                        </li>
+                        @Html.ActionLink("Edit   ", "Edit", new { id = item.ID })
                     }
                 }
 
             </td>
         </tr>
-}
-    </tbody>
+            }
+        }
+            </tbody>
 </table>

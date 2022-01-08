@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
 @inject SignInManager<IdentityUser> SignInManager
 @model IEnumerable<Treningi.WebApp.ActivityVM>
 
@@ -18,26 +19,36 @@
             <th>
                 @Html.DisplayNameFor(model => model.exercise)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompetitorID)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
+
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.hour)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.day)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.exercise)
-                </td>
-            </tr>
+@*            @if(User.FindFirst(ClaimTypes.NameIdentifier).Equals(modelItem => item.CompetitorID))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.hour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.day)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.exercise)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompetitorID)
+                    </td>
+                </tr>
+            }*@
         }
     </tbody>
 </table>

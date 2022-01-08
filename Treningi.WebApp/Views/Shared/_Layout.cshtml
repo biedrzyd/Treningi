@@ -66,10 +66,10 @@
             </li>
             @* Tajne dla roli "wazny" lub "zarzadca" *@
             @{
-                if (User.IsInRole("zarzadca") || User.IsInRole("wazny"))
+                if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Tajne" asp-action="Index">*Materiały</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj rolę</a>
                     </li>
                 }
                 else  //tylko wyswietl nieaktywną opcję
@@ -82,10 +82,10 @@
 
             @* Panel administracyjny TYLKO dla roli "zarzadca" *@
             @{
-                if (User.IsInRole("zarzadca"))
+                if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="PanelAdministracyjny" asp-action="Index">**Panel administracyjny</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Pokaż listę ról</a>
                     </li>
                 }
                 else  //tylko wyswietl nieaktywną opcję

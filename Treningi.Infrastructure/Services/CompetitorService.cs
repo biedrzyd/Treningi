@@ -28,7 +28,8 @@ namespace Treningi.Infrastructure.Services
                 Country = x.Country,
                 Height = x.Height,
                 Weight = x.Weight,
-                Date_of_birth = x.Date_of_birth
+                Date_of_birth = x.Date_of_birth,
+                CoachId = x.CoachId
             });
         }
         public async Task<IEnumerable<CompetitorDTO>> GetByFilter(string name, string country)
@@ -42,7 +43,8 @@ namespace Treningi.Infrastructure.Services
                 Country = x.Country,
                 Height = x.Height,
                 Weight = x.Weight,
-                Date_of_birth = x.Date_of_birth
+                Date_of_birth = x.Date_of_birth,
+                CoachId = x.CoachId
             });
         }
         public async Task<CompetitorDTO> Get(int givenId)
@@ -56,7 +58,8 @@ namespace Treningi.Infrastructure.Services
                 Country = x.Country,
                 Height = x.Height,
                 Weight = x.Weight,
-                Date_of_birth = x.Date_of_birth
+                Date_of_birth = x.Date_of_birth,
+                CoachId = x.CoachId
             });
         }
         public async Task<CompetitorDTO> Add(CreateCompetitor s)
@@ -69,7 +72,8 @@ namespace Treningi.Infrastructure.Services
                 Country = s.Country,
                 Height = s.Height,
                 Weight = s.Weight,
-                Date_of_birth = s.DateBirth
+                Date_of_birth = s.DateBirth,
+                CoachId = s.CoachId
             });
             return (new CompetitorDTO()
             {
@@ -97,6 +101,7 @@ namespace Treningi.Infrastructure.Services
                 Height = s.Height,
                 Weight = s.Weight,
                 Date_of_birth = s.DateBirth,
+                CoachId = s.CoachId
             };
             await _competitorsRepository.UpdateAsync(skiJumper);
 
@@ -107,7 +112,8 @@ namespace Treningi.Infrastructure.Services
                 Country = s.Country,
                 Height = s.Height,
                 Weight = s.Weight,
-                Date_of_birth = s.DateBirth
+                Date_of_birth = s.DateBirth,
+                CoachId = s.CoachId
             };
         }
     }

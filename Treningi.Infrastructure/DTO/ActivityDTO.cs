@@ -10,5 +10,6 @@ namespace Treningi.Infrastructure.DTO
         public string day { get; set; }
         public string hour { get; set; }
         public string exercise { get; set; }
+        public string CompetitorID { get; set; }
     }
 }
