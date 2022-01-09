@@ -6,24 +6,48 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ID" class="control-label"></label>
-                <input asp-for="ID" class="form-control" />
-                <span asp-validation-for="ID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CompetitorID" class="control-label"></label>
-                <input asp-for="CompetitorID" class="form-control" />
-                <span asp-validation-for="CompetitorID" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="day" class="control-label"></label>
-                <input asp-for="day" class="form-control" />
+                <select name="day" id="day">
+                    <option>Poniedziałek</option>
+                    <option>Wtorek</option>
+                    <option>Środa</option>
+                    <option>Czwartek</option>
+                    <option>Piatek</option>
+                    <option>Sobota</option>
+                    <option>Niedziela</option>
+                </select>
                 <span asp-validation-for="day" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="hour" class="control-label"></label>
-                <input asp-for="hour" class="form-control" />
+                <select name="hour" id="hour">
+                    <option>01:00</option>
+                    <option>02:00</option>
+                    <option>03:00</option>
+                    <option>04:00</option>
+                    <option>05:00</option>
+                    <option>06:00</option>
+                    <option>07:00</option>
+                    <option>08:00</option>
+                    <option>09:00</option>
+                    <option>10:00</option>
+                    <option>11:00</option>
+                    <option>12:00</option>
+                    <option>13:00</option>
+                    <option>14:00</option>
+                    <option>15:00</option>
+                    <option>16:00</option>
+                    <option>17:00</option>
+                    <option>18:00</option>
+                    <option>19:00</option>
+                    <option>20:00</option>
+                    <option>21:00</option>
+                    <option>22:00</option>
+                    <option>23:00</option>
+                </select>
                 <span asp-validation-for="hour" class="text-danger"></span>
             </div>
             <div class="form-group">

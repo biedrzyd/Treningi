@@ -16,8 +16,8 @@ namespace Treningi.WebApp.Controllers
     public class ActivityController : Controller
     {
         public IConfiguration Configuration;
-        private string currentlyViewingId = "1";
-
+        private static string currentlyViewingId = "1";
+        static int currentId;
         public ActivityController(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,7 +36,8 @@ namespace Treningi.WebApp.Controllers
         [Authorize(Roles = "Trener")]
         public async Task<IActionResult> Editplan(string id)
         {
-            currentlyViewingId = id.ToString();
+            currentlyViewingId = id;
+            currentId = Int32.Parse(id);
             ViewBag.Id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string _restpath = GetHostUrl().Content + CN();
             //var tokenString = GenerateJSONWebToken();
@@ -64,6 +65,7 @@ namespace Treningi.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Editplan(ActivityVM s)
         {
+            currentId = s.ID;
             string _restpath = GetHostUrl().Content + CN();
             ActivityVM sjResult = new ActivityVM();
             try
@@ -99,12 +101,13 @@ namespace Treningi.WebApp.Controllers
                 }
             }
             catch (Exception e) { return View(e); }
-            return RedirectToAction(nameof(Index), "Competitor");
+            return RedirectToAction(nameof(Editplan), new { id = currentId });
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(ActivityVM s)
         {
+            s.CompetitorID = currentId.ToString();
             string _restpath = GetHostUrl().Content + CN();
             string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
@@ -114,7 +117,7 @@ namespace Treningi.WebApp.Controllers
                 {
                 }
             }
-            return RedirectToAction(nameof(Index), "Competitor");
+            return RedirectToAction(nameof(Editplan), new { id = currentId });
         }
         public async Task<IActionResult> Create(int id)
         {
