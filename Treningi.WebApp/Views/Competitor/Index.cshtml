@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<Treningi.WebApp.CompetitorVM>
-
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Principal;
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -34,52 +35,54 @@
         </tr>
     </thead>
     <tbody>
+        Witaj @ViewBag.Id
         @foreach (var item in Model)
         {
-                @if (User.IsInRole("Admin") || (User.IsInRole("Trener") && item.CoachId.Equals(User.Identity)))
-                {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Forename)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Country)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date_of_birth)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Height)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Weight)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CoachId)
-            </td>
-            <td>
-                @{
-                    if (User.IsInRole("Admin"))
-                    {
-                        @Html.ActionLink("Edit   ", "Edit", new { id = item.ID })
-                        @Html.ActionLink("Details   ", "Details", new { id = item.ID })
-                        @Html.ActionLink("Delete   ", "Delete", new { id = item.ID })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Edit   ", "Edit", new { id = item.ID })
-                    }
-                }
+            @if (User.IsInRole("Admin") || (User.IsInRole("Trener") && item.CoachId != null && item.CoachId.Equals(@ViewBag.Id)))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Forename)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date_of_birth)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Height)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Weight)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CoachId)
+                    </td>
+                    <td>
+                        @{
+                            if (User.IsInRole("Admin"))
+                            {
+                                @Html.ActionLink("Edit   ", "Edit", new { id = item.ID })
+                                @Html.ActionLink("Details   ", "Details", new { id = item.ID })
+                                @Html.ActionLink("Delete   ", "Delete", new { id = item.ID })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Edit plan", "Editplan", "Activity", new { id = item.ID })
 
-            </td>
-        </tr>
+                            }
+                        }
+
+                    </td>
+                </tr>
             }
         }
-            </tbody>
+    </tbody>
 </table>

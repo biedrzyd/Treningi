@@ -11,5 +11,7 @@ namespace Treningi.Infrastructure.Services
     {
         Task<IEnumerable<ActivityDTO>> BrowseAll();
         Task<ActivityDTO> Get(int id);
+        Task<ActivityDTO> Add(CreateActivity s);
+        Task<ActivityDTO> Delete(int s);
     }
 }

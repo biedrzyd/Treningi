@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Treningi.Infrastructure.Repositories;
 
-namespace Treningi.Infrastructure.Migrations
+namespace Treningi.WebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20211228181405_startowa4")]
-    partial class startowa4
+    [Migration("20220108165725_compidasint")]
+    partial class compidasint
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -217,6 +217,30 @@ namespace Treningi.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Treningi.Core.Activity", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("CompetitorID")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("day")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("exercise")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("hour")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Activity");
+                });
+
             modelBuilder.Entity("Treningi.Core.Coach", b =>
                 {
                     b.Property<int>("ID")
@@ -245,7 +269,7 @@ namespace Treningi.Infrastructure.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("CoachID")
+                    b.Property<int>("CoachId")
                         .HasColumnType("int");
 
                     b.Property<string>("Country")
@@ -267,8 +291,6 @@ namespace Treningi.Infrastructure.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("CoachID");
 
                     b.ToTable("Competitor");
                 });
@@ -322,15 +344,6 @@ namespace Treningi.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Treningi.Core.Competitor", b =>
-                {
-                    b.HasOne("Treningi.Core.Coach", "Coach")
-                        .WithMany()
-                        .HasForeignKey("CoachID");
-
-                    b.Navigation("Coach");
                 });
 #pragma warning restore 612, 618
         }

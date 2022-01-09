@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Treningi.WebApp.ActivityVM>
+<html>
+<body>
+    Poniedziałek
+    <br />
+    Wtorek
+    <br />
+    Środa
+    <br />
+    Czwartek
+    <br />
+    Piątek
+    <br />
+    Sobota
+    <br />
+    Niedziela
+</body>
+</html>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompetitorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.day)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.hour)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.exercise)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        Wtorek
+        @foreach (var item in Model)
+        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompetitorID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.day)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.hour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.exercise)
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

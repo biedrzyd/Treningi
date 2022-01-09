@@ -36,6 +36,8 @@ namespace Treningi.WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = GenerateJSONWebToken();
+            CoachVM coachVM = new CoachVM();
+            coachVM.Forename = _restpath;
             List<CoachVM> coachList = new List<CoachVM>();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
@@ -44,6 +46,7 @@ namespace Treningi.WebApp.Controllers
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     coachList = JsonConvert.DeserializeObject<List<CoachVM>>(apiResponse);
+                    coachList.Add(coachVM);
                 }
             }
 

@@ -267,8 +267,8 @@ namespace Treningi.WebApp.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("CoachId")
-                        .HasColumnType("int");
+                    b.Property<string>("CoachId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");

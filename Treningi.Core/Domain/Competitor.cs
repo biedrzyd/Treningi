@@ -12,6 +12,6 @@ namespace Treningi.Core
         public DateTime Date_of_birth { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }
-        public int CoachId { get; set; }
+        public string CoachId { get; set; }
     }
 }

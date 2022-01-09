@@ -6,7 +6,7 @@ namespace Treningi.Infrastructure.Commands
 {
     public class CreateCompetitor
     {
-        public CreateCompetitor(string n, string s, int h, int w, string c, DateTime d, int t)
+        public CreateCompetitor(string n, string s, int h, int w, string c, DateTime d, string t)
         {
             Forename = n;
             Surname = s;
@@ -24,6 +24,6 @@ namespace Treningi.Infrastructure.Commands
         public int Height { get; set; }
         public int Weight { get; set; }
         public string Country { get; set; }
-        public int CoachId { get; set; }
+        public string CoachId { get; set; }
     }
 }

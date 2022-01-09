@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Treningi.WebApp.ActivityVM>
+<html>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.day)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.hour)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.exercise)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.day)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hour)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.exercise)
+                </td>
+                <td>
+                    @Html.ActionLink("Delete   ", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

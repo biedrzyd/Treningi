@@ -35,12 +35,15 @@ namespace Treningi.WebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            ViewBag.Id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (ViewBag.Id == null)
+                ViewBag.Id = -1;
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            //var tokenString = GenerateJSONWebToken();
             List<CompetitorVM> skiJumpersList = new List<CompetitorVM>();
             using (var httpClient = new HttpClient( new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }}) )
             {
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
+                //httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -64,7 +67,6 @@ namespace Treningi.WebApp.Controllers
                     s = JsonConvert.DeserializeObject<CompetitorVM>(apiResponse);
                 }
             }
-
             return View(s);
         }
         [HttpPost]
@@ -101,9 +103,11 @@ namespace Treningi.WebApp.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                     }
                 }
-            } catch (Exception e){ return View(e); }
+            } 
+            catch (Exception e){ return View(e); }
             return RedirectToAction(nameof(Index));
         }
+
         [HttpPost]
         public async Task<IActionResult> Create(CompetitorVM s)
         {
@@ -177,6 +181,44 @@ namespace Treningi.WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
             CompetitorVM sjResult = new CompetitorVM();
+            try
+            {
+                using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
+                {
+                    string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
+                    var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+                    using (var response = await httpClient.PutAsync($"{_restpath}/{s.ID}", content))
+                    {
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return View(e);
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [Authorize(Roles = "Trener")]
+        public async Task<IActionResult> Editplan(int id)
+        {
+            string _restpath = "https://localhost:5001/Activity";
+            List<ActivityVM> skiJumpersList = new List<ActivityVM>();
+            using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
+            {
+                using (var response = await httpClient.GetAsync(_restpath))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
+            }
+
+            return View(skiJumpersList);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Editplan(ActivityVM s)
+        {
+            string _restpath = GetHostUrl().Content + CN();
+            ActivityVM sjResult = new ActivityVM();
             try
             {
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Treningi.Infrastructure.Commands;
 using Treningi.Infrastructure.DTO;
 using Treningi.Infrastructure.Services;
 
@@ -18,21 +19,39 @@ namespace Treningi.WebAPI.Controllers
             _coachService = coachService;
         }
 
-            [HttpGet]
-            public async Task<IActionResult> BrowseAllCoaches()
-            {
-                IEnumerable<ActivityDTO> z = await _coachService.BrowseAll();
-                return Json(z);
-            }
+        [HttpGet]
+        public async Task<IActionResult> BrowseAll()
+        {
+            IEnumerable<ActivityDTO> z = await _coachService.BrowseAll();
+            return Json(z);
+        }
 
-            //https://localhost:5001/skijumper/{id}
+        //https://localhost:5001/skijumper/{id}
 
-            [HttpGet("{id}")]
-            public async Task<IActionResult> GetCoach(int id)
-            {
-                ActivityDTO z = await _coachService.Get(id);
-                return Json(z);
-            }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSkiJumper(int id)
+        {
+            ActivityDTO z = await _coachService.Get(id);
+            return Json(z);
+        }
+
+        //https://localhost:5001/skijumper/filters?name=alan&country=ger
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSkiJumper([FromBody] CreateActivity skiJumper)
+        {
+            await _coachService.Add(skiJumper);
+            return Json("user added");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSkiJumper(int id)
+        {
+            await _coachService.Delete(id);
+            return Json("user with id " + id + " removed");
+        }
+
+
 
     }
 }

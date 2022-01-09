@@ -9,5 +9,8 @@ namespace Treningi.Core.Repositories
     {
         Task<Activity> GetAsync(int id);
         Task<IEnumerable<Activity>> BrowseAllAsync();
+        Task DelAsync(int id);
+        Task AddAsync(Activity c);
+        int getAvailableId();
     }
 }

@@ -8,7 +8,7 @@ namespace Treningi.Infrastructure.Commands
     public class UpdateCompetitor
     {
         [JsonConstructor]
-        public UpdateCompetitor(int sid, string n, string s, int h, int w, string c, DateTime d, int t)
+        public UpdateCompetitor(int sid, string n, string s, int h, int w, string c, DateTime d, string t)
         {
             ID = sid;
             Forename = n;
@@ -30,6 +30,6 @@ namespace Treningi.Infrastructure.Commands
         public int Height { get; set; }
         public int Weight { get; set; }
         public string Country { get; set; }
-        public int CoachId { get; set; }
+        public string CoachId { get; set; }
     }
 }

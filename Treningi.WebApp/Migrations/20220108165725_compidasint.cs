@@ -2,7 +2,7 @@
 
 namespace Treningi.WebApp.Migrations
 {
-    public partial class Dodanie_mechanizmu_Identity2 : Migration
+    public partial class compidasint : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
