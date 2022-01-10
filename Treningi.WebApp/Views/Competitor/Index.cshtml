@@ -35,7 +35,7 @@
         </tr>
     </thead>
     <tbody>
-        Witaj @ViewBag.Id
+
         @foreach (var item in Model)
         {
             @if (User.IsInRole("Admin") || (User.IsInRole("Trener") && item.CoachId != null && item.CoachId.Equals(@ViewBag.Id)))

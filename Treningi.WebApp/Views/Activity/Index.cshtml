@@ -1,6 +1,24 @@
-﻿@model IEnumerable<Treningi.WebApp.ActivityVM>
-<html>
-<body>
-    tst
-</body>
-</html>
+﻿@model Treningi.WebApp.ActivityVM
+
+<h4>ActivityVM</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Showactivities">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CompetitorID" class="control-label"></label>
+                <input asp-for="CompetitorID" class="form-control" />
+                <span asp-validation-for="CompetitorID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Wypisz" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

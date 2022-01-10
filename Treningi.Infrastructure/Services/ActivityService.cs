@@ -50,7 +50,7 @@ namespace Treningi.Infrastructure.Services
                 CompetitorID = s.CompetitorID,
                 day = s.day,
                 hour = s.hour,
-                exercise = s.exercise
+                exercise = s.exercise,
             });
             return (new ActivityDTO()
             {

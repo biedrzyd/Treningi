@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Treningi.WebApp.ActivityVM>
+<html>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Dzień
+                </th>
+                <th>
+                    Godzina
+                </th>
+                <th>
+                    Nazwa ćwiczenia
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.day)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.hour)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.exercise)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

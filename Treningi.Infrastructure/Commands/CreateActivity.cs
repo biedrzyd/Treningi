@@ -6,7 +6,7 @@ namespace Treningi.Infrastructure.Commands
 {
     public class CreateActivity
     {
-        public CreateActivity(string n, string s, string h, string w)
+        public CreateActivity(int n, string s, string h, string w)
         {
             CompetitorID = n;
             day = s;
@@ -15,7 +15,7 @@ namespace Treningi.Infrastructure.Commands
         }
 
         public CreateActivity() {}
-        public string CompetitorID { get; set; }
+        public int CompetitorID { get; set; }
         public string day { get; set; }
         public string hour { get; set; }
         public string exercise { get; set; }

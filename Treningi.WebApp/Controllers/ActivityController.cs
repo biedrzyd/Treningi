@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace Treningi.WebApp.Controllers
 {
@@ -51,16 +52,33 @@ namespace Treningi.WebApp.Controllers
                     skiJumpersList = JsonConvert.DeserializeObject<List<ActivityVM>>(apiResponse);
                     foreach(ActivityVM a in skiJumpersList.ToArray())
                     {
-                        if (a.CompetitorID != id)
+                        if (a.CompetitorID != currentId)
                             skiJumpersList.Remove(a);
                     }
                     skiJumpersList.Sort((p, q) => p.hour.CompareTo(q.hour));
-                    skiJumpersList.Sort((p, q) => p.day.CompareTo(q.day));
-
+                    skiJumpersList = skiJumpersList.OrderBy(x => ( getDayValue(x.day))).ToList();
                 }
             }
 
             return View(skiJumpersList);
+        }
+
+
+        private int getDayValue(string s)
+        {
+            if (s == "Poniedziałek")
+                return 0;
+            if (s == "Wtorek")
+                return 1;
+            if (s == "Środa")
+                return 2;
+            if (s == "Czwartek")
+                return 3;
+            if (s == "Piątek")
+                return 4;
+            if (s == "Sobota")
+                return 5;
+            return 6;
         }
         [HttpPost]
         public async Task<IActionResult> Editplan(ActivityVM s)
@@ -86,6 +104,8 @@ namespace Treningi.WebApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
         [Authorize(Roles = "Trener")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -107,7 +127,7 @@ namespace Treningi.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ActivityVM s)
         {
-            s.CompetitorID = currentId.ToString();
+            s.CompetitorID = currentId;
             string _restpath = GetHostUrl().Content + CN();
             string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
@@ -130,6 +150,35 @@ namespace Treningi.WebApp.Controllers
                 }
             }
             return View(s);
+        }
+
+        [Authorize(Roles = "Zawodnik")]
+        public async Task<IActionResult> Showactivities(ActivityVM avm)
+        {
+            string _restpath = GetHostUrl().Content + CN();
+            //var tokenString = GenerateJSONWebToken();
+            List<ActivityVM> skiJumpersList = new List<ActivityVM>();
+            using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
+            {
+                //httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
+                using (var response = await httpClient.GetAsync(_restpath))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    skiJumpersList = JsonConvert.DeserializeObject<List<ActivityVM>>(apiResponse);
+                    foreach (ActivityVM a in skiJumpersList.ToArray())
+                    {
+                        if (a.CompetitorID != avm.CompetitorID)
+                            skiJumpersList.Remove(a);
+                    }
+                    skiJumpersList.Sort((p, q) => p.hour.CompareTo(q.hour));
+                    skiJumpersList = skiJumpersList.OrderBy(x => (getDayValue(x.day))).ToList();
+                }
+            }
+            return View(skiJumpersList);
+        }
+        public IActionResult Index()
+        {
+            return View();
         }
     }
 
