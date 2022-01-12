@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Treningi.Infrastructure.Repositories;
 using Treningi.WebApp.Models;
+using EmailService;
 
 namespace Treningi.WebApp
 {
@@ -27,6 +28,7 @@ namespace Treningi.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddScoped<JWToken>();
             JWToken.Configuration = Configuration;
             services.AddControllersWithViews();
@@ -39,6 +41,11 @@ namespace Treningi.WebApp
             services.AddIdentity<IdentityUser, IdentityRole>(
                 ).AddEntityFrameworkStores<AppDbContext>();
 
+            var emailConfig = Configuration
+    .GetSection("EmailConfiguration")
+    .Get<EmailConfiguration>();
+            services.AddSingleton(emailConfig);
+            services.AddScoped<IEmailSender, EmailSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

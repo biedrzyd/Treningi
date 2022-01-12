@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using EmailService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -18,9 +19,11 @@ namespace Treningi.WebApp.Controllers
     public class CompetitorController : Controller
     {
         public IConfiguration Configuration;
+        private readonly IEmailSender _emailSender;
 
-        public CompetitorController(IConfiguration configuration)
+        public CompetitorController(IEmailSender emailSender, IConfiguration configuration)
         {
+            _emailSender = emailSender;
             Configuration = configuration;
         }
 
@@ -112,6 +115,12 @@ namespace Treningi.WebApp.Controllers
         public async Task<IActionResult> Create(CompetitorVM s)
         {
             string _restpath = GetHostUrl().Content + CN();
+
+            string messageBody = "Konto " + s.Forename + " " + s.Surname + " zostalo stworzone";
+            var message = new Message(new string[] { "mytrainingsapp@gmail.com" }, "Test email", "aaaaaaaaaaaa");
+            message.Content = messageBody;
+            _emailSender.SendEmail(message);
+
             string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {

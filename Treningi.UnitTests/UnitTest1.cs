@@ -74,7 +74,6 @@ namespace Treningi.UnitTests
         public async Task UpdateCompetitor_StandardCase_DataShouldChange()
         {
             TestInitialize();
-            int idToUpdate = 1;
             _competitorsRepositoryMock.Setup(x => x.UpdateAsync(It.IsAny<Competitor>())).Verifiable();
             UpdateCompetitor u = new UpdateCompetitor(10, "A", "B", 100, 100, "20", new System.DateTime(), "30");
 
@@ -99,15 +98,13 @@ namespace Treningi.UnitTests
         {
             TestInitialize();
             int competitorId = 10;
-            string competitorName = "Zbyszek";
-            TestInitialize();
             _competitorsRepositoryMock.Setup(x => x.GetAsync(It.IsAny<int>())).Returns(Task.FromResult(new Competitor()
             {
                 ID = competitorId,
                 Forename = "Test"
             }));
 
-            Task t = _competitorService.Get(competitorId);
+            await _competitorService.Get(competitorId);
             
             _competitorsRepositoryMock.Verify(x => x.GetAsync(It.IsAny<int>()), Times.Once());
         }
