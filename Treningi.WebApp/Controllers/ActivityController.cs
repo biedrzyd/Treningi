@@ -19,8 +19,10 @@ namespace Treningi.WebApp.Controllers
         public IConfiguration Configuration;
         private static string currentlyViewingId = "1";
         static int currentId;
-        public ActivityController(IConfiguration configuration)
+        private readonly JWToken _jwtoken;
+        public ActivityController(IConfiguration configuration, JWToken jwtoken)
         {
+            _jwtoken = jwtoken;
             Configuration = configuration;
         }
 
@@ -41,11 +43,11 @@ namespace Treningi.WebApp.Controllers
             currentId = Int32.Parse(id);
             ViewBag.Id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             string _restpath = GetHostUrl().Content + CN();
-            //var tokenString = GenerateJSONWebToken();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             List<ActivityVM> skiJumpersList = new List<ActivityVM>();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
-                //httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -62,8 +64,6 @@ namespace Treningi.WebApp.Controllers
 
             return View(skiJumpersList);
         }
-
-
         private int getDayValue(string s)
         {
             if (s == "Poniedziałek")
@@ -88,8 +88,10 @@ namespace Treningi.WebApp.Controllers
             ActivityVM sjResult = new ActivityVM();
             try
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     using (var response = await httpClient.PutAsync($"{_restpath}/{s.ID}", content))
@@ -112,8 +114,10 @@ namespace Treningi.WebApp.Controllers
             string _restpath = GetHostUrl().Content + CN();
             try
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     using (var response = await httpClient.DeleteAsync($"{_restpath}/{id}"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -130,8 +134,10 @@ namespace Treningi.WebApp.Controllers
             s.CompetitorID = currentId;
             string _restpath = GetHostUrl().Content + CN();
             string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync($"{_restpath}", content))
                 {
@@ -143,8 +149,10 @@ namespace Treningi.WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
             ActivityVM s = new ActivityVM();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync($"{_restpath}"))
                 {
                 }
@@ -156,11 +164,11 @@ namespace Treningi.WebApp.Controllers
         public async Task<IActionResult> Showactivities(ActivityVM avm)
         {
             string _restpath = GetHostUrl().Content + CN();
-            //var tokenString = GenerateJSONWebToken();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             List<ActivityVM> skiJumpersList = new List<ActivityVM>();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
-                //httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();

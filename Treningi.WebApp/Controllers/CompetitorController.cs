@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Treningi.WebApp;
+using Treningi.WebApp.Models;
 
 namespace Treningi.WebApp.Controllers
 {
@@ -20,11 +21,13 @@ namespace Treningi.WebApp.Controllers
     {
         public IConfiguration Configuration;
         private readonly IEmailSender _emailSender;
+        private readonly JWToken _jwtoken;
 
-        public CompetitorController(IEmailSender emailSender, IConfiguration configuration)
+        public CompetitorController(IEmailSender emailSender, IConfiguration configuration, JWToken jwtoken)
         {
             _emailSender = emailSender;
             Configuration = configuration;
+            _jwtoken = jwtoken;
         }
 
         public ContentResult GetHostUrl()
@@ -38,15 +41,15 @@ namespace Treningi.WebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ViewBag.Id = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewBag.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (ViewBag.Id == null)
                 ViewBag.Id = -1;
             string _restpath = GetHostUrl().Content + CN();
-            //var tokenString = GenerateJSONWebToken();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             List<CompetitorVM> skiJumpersList = new List<CompetitorVM>();
             using (var httpClient = new HttpClient( new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }}) )
             {
-                //httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -61,9 +64,11 @@ namespace Treningi.WebApp.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             string _restpath = GetHostUrl().Content + CN();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             CompetitorVM s = new CompetitorVM();
             using (var httpClient = new HttpClient( new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }}) )
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -76,11 +81,13 @@ namespace Treningi.WebApp.Controllers
         public async Task<IActionResult> Edit(CompetitorVM s)
         {
             string _restpath = GetHostUrl().Content + CN();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             CompetitorVM sjResult = new CompetitorVM();
             try
             {
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }}) )
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     using (var response = await httpClient.PutAsync($"{_restpath}/{s.ID}", content))
@@ -99,8 +106,10 @@ namespace Treningi.WebApp.Controllers
             string _restpath = GetHostUrl().Content + CN();
             try
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     using (var response = await httpClient.DeleteAsync($"{_restpath}/{id}"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -120,10 +129,11 @@ namespace Treningi.WebApp.Controllers
             var message = new Message(new string[] { "mytrainingsapp@gmail.com" }, "Test email", "aaaaaaaaaaaa");
             message.Content = messageBody;
             _emailSender.SendEmail(message);
-
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync($"{_restpath}", content))
                 {
@@ -135,8 +145,10 @@ namespace Treningi.WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
             CompetitorVM s = new CompetitorVM();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync($"{_restpath}"))
                 {
                 }
@@ -144,38 +156,16 @@ namespace Treningi.WebApp.Controllers
             return View(s);
         }
 
-        private string GenerateJSONWebToken()
-        {
-            var pass = Configuration["Password:JWToken"];
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(pass));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim("Name", "Dominik"),
-                new Claim(JwtRegisteredClaimNames.Email, " "),
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: "http://www.dominikbiedrzycki.pl",
-                audience: "http://www.dominikbiedrzycki.pl",
-                expires: DateTime.Now.AddHours(3),
-                signingCredentials: credentials,
-                claims: claims
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-
 
 
         public async Task<IActionResult> Details(int id)
         {
             string _restpath = GetHostUrl().Content + CN();
             CompetitorVM s = new CompetitorVM();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -192,8 +182,10 @@ namespace Treningi.WebApp.Controllers
             CompetitorVM sjResult = new CompetitorVM();
             try
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     using (var response = await httpClient.PutAsync($"{_restpath}/{s.ID}", content))
@@ -215,6 +207,8 @@ namespace Treningi.WebApp.Controllers
             List<ActivityVM> skiJumpersList = new List<ActivityVM>();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -230,8 +224,10 @@ namespace Treningi.WebApp.Controllers
             ActivityVM sjResult = new ActivityVM();
             try
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     using (var response = await httpClient.PutAsync($"{_restpath}/{s.ID}", content))

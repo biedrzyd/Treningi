@@ -11,15 +11,17 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Treningi.WebApp.Models;
 
 namespace Treningi.WebApp.Controllers
 {
     public class CoachController : Controller
     {
         public IConfiguration Configuration;
-
-        public CoachController(IConfiguration configuration)
+        private readonly JWToken _jwtoken;
+        public CoachController(IConfiguration configuration, JWToken jwtoken)
         {
+            _jwtoken = jwtoken;
             Configuration = configuration;
         }
 
@@ -35,12 +37,13 @@ namespace Treningi.WebApp.Controllers
         public async Task<IActionResult> Index()
         {
             string _restpath = GetHostUrl().Content + CN();
-            var tokenString = GenerateJSONWebToken();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             CoachVM coachVM = new CoachVM();
             coachVM.Forename = _restpath;
             List<CoachVM> coachList = new List<CoachVM>();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
                 {
@@ -58,8 +61,10 @@ namespace Treningi.WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
             CoachVM s = new CoachVM();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -76,8 +81,10 @@ namespace Treningi.WebApp.Controllers
             CoachVM sjResult = new CoachVM();
             try
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
                     var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                     using (var response = await httpClient.PutAsync($"{_restpath}/{s.ID}", content))
@@ -97,8 +104,10 @@ namespace Treningi.WebApp.Controllers
             string _restpath = GetHostUrl().Content + CN();
             try
             {
+                var tokenString = _jwtoken.GenerateJSONWebToken();
                 using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
+                    httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     using (var response = await httpClient.DeleteAsync($"{_restpath}/{id}"))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
@@ -112,9 +121,11 @@ namespace Treningi.WebApp.Controllers
         public async Task<IActionResult> Create(CoachVM s)
         {
             string _restpath = GetHostUrl().Content + CN();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync($"{_restpath}", content))
                 {
@@ -126,35 +137,15 @@ namespace Treningi.WebApp.Controllers
         {
             string _restpath = GetHostUrl().Content + CN();
             CoachVM s = new CoachVM();
+            var tokenString = _jwtoken.GenerateJSONWebToken();
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync($"{_restpath}"))
                 {
                 }
             }
             return View(s);
-        }
-        private string GenerateJSONWebToken()
-        {
-            var pass = Configuration["Password:JWToken"];
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(pass));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim("Name", "Dominik"),
-                new Claim(JwtRegisteredClaimNames.Email, " "),
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: "http://www.dominikbiedrzycki.pl",
-                audience: "http://www.dominikbiedrzycki.pl",
-                expires: DateTime.Now.AddHours(3),
-                signingCredentials: credentials,
-                claims: claims
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
