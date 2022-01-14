@@ -29,7 +29,9 @@ namespace Treningi.Infrastructure.Services
                 Height = x.Height,
                 Weight = x.Weight,
                 Date_of_birth = x.Date_of_birth,
-                CoachId = x.CoachId
+                CoachId = x.CoachId,
+                Image = x.Image,
+                UserImageId = x.UserImageId
             });
         }
         public async Task<IEnumerable<CompetitorDTO>> GetByFilter(string name, string country)
@@ -44,7 +46,9 @@ namespace Treningi.Infrastructure.Services
                 Height = x.Height,
                 Weight = x.Weight,
                 Date_of_birth = x.Date_of_birth,
-                CoachId = x.CoachId
+                CoachId = x.CoachId,
+                Image = x.Image,
+                UserImageId = x.UserImageId
             });
         }
         public async Task<CompetitorDTO> Get(int givenId)
@@ -59,7 +63,9 @@ namespace Treningi.Infrastructure.Services
                 Height = x.Height,
                 Weight = x.Weight,
                 Date_of_birth = x.Date_of_birth,
-                CoachId = x.CoachId
+                CoachId = x.CoachId,
+                Image = x.Image,
+                UserImageId = x.UserImageId
             });
         }
         public async Task<CompetitorDTO> Add(CreateCompetitor s)
@@ -73,7 +79,9 @@ namespace Treningi.Infrastructure.Services
                 Height = s.Height,
                 Weight = s.Weight,
                 Date_of_birth = s.DateBirth,
-                CoachId = s.CoachId
+                CoachId = s.CoachId,
+                Image = s.Image,
+                UserImageId = s.UserImageId
             });
             return (new CompetitorDTO()
             {
@@ -101,7 +109,7 @@ namespace Treningi.Infrastructure.Services
                 Height = s.Height,
                 Weight = s.Weight,
                 Date_of_birth = s.DateBirth,
-                CoachId = s.CoachId
+                CoachId = s.CoachId,
             };
             await _competitorsRepository.UpdateAsync(skiJumper);
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Treningi.Infrastructure.Repositories;
 
 namespace Treningi.WebApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220114131707_nwwnwnwnwn111w")]
+    partial class nwwnwnwnwn111w
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -282,13 +284,13 @@ namespace Treningi.WebApp.Migrations
                     b.Property<double>("Height")
                         .HasColumnType("float");
 
-                    b.Property<int?>("ImageId")
+                    b.Property<string>("ImageId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ImageId1")
                         .HasColumnType("int");
 
                     b.Property<string>("Surname")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserImageId")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Weight")
@@ -296,7 +298,7 @@ namespace Treningi.WebApp.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("ImageId1");
 
                     b.ToTable("Competitor");
                 });
@@ -374,7 +376,7 @@ namespace Treningi.WebApp.Migrations
                 {
                     b.HasOne("Treningi.WebApp.Models.ImageModel", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId1");
 
                     b.Navigation("Image");
                 });

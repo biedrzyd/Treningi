@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Treningi.Infrastructure.Repositories
         }
         public async Task<IEnumerable<Competitor>> BrowseAllAsync()
         {
-            return await Task.FromResult(_appDbContext.Competitor);
+            return await Task.FromResult(_appDbContext.Competitor.Include(i => i.Image));
         }
         public async Task<IEnumerable<Competitor>> GetByFilterSync(string name, string country)
         {
@@ -68,6 +69,8 @@ namespace Treningi.Infrastructure.Repositories
                 z.Country = s.Country;
                 z.CoachId = s.CoachId;
                 z.ID = s.ID;
+                z.Image = s.Image;
+                z.UserImageId = s.UserImageId;
                 _appDbContext.SaveChanges();
             }
             catch (Exception e)

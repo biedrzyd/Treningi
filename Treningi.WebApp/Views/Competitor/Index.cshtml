@@ -4,7 +4,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<input type="search" class="search" id="searchrec" placeholder="Wyszukaj zawodnika" /> 
+<input type="search" class="search" id="searchrec" placeholder="Wyszukaj zawodnika" />
 <table class="table" id="table1">
     <thead>
         <tr>
@@ -32,7 +32,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CoachId)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -67,6 +69,9 @@
                         @Html.DisplayFor(modelItem => item.CoachId)
                     </td>
                     <td>
+                        <img src="@("~/Image/"+item.UserImageId+".jpg")" asp-append-version="true" width="250px" height="250px" />
+                    </td>
+                    <td>
                         @{
                             if (User.IsInRole("Admin"))
                             {
@@ -91,12 +96,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
-    $(document).ready(function ()
-    {
+    $(document).ready(function () {
         $('.search').on('keyup', function () {
             var datasearch = $(this).val().toLowerCase();
-            $("#table1 tr").each(function ()
-            {
+            $("#table1 tr").each(function () {
                 var stringdata = $(this).text().toLowerCase();
                 if (stringdata.indexOf(datasearch) === -1) {
                     $(this).hide();

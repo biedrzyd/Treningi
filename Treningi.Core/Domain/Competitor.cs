@@ -1,4 +1,5 @@
 ﻿using System;
+using Treningi.WebApp.Models;
 
 namespace Treningi.Core
 {
@@ -13,5 +14,6 @@ namespace Treningi.Core
         public double Height { get; set; }
         public double Weight { get; set; }
         public string CoachId { get; set; }
+        public ImageModel Image { get; set; }
     }
 }

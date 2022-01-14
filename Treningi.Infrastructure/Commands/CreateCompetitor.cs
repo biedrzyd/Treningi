@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using Treningi.WebApp.Models;
 
 namespace Treningi.Infrastructure.Commands
 {
     public class CreateCompetitor
     {
-        public CreateCompetitor(string n, string s, int h, int w, string c, DateTime d, string t)
+        public CreateCompetitor(string n, string s, int h, int w, string c, DateTime d, string t, ImageModel i, string iid)
         {
             Forename = n;
             Surname = s;
@@ -15,6 +17,8 @@ namespace Treningi.Infrastructure.Commands
             Country = c;
             DateBirth = d;
             CoachId = t;
+            Image = i;
+            UserImageId = iid;
         }
 
         public CreateCompetitor() {}
@@ -25,5 +29,8 @@ namespace Treningi.Infrastructure.Commands
         public int Weight { get; set; }
         public string Country { get; set; }
         public string CoachId { get; set; }
+        [JsonIgnore]
+        public ImageModel Image { get; set; }
+        public string UserImageId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,5 +17,8 @@ namespace Treningi.WebApp
         public double Weight { get; set; }
         public string CoachId { get; set; }
         public string UserId { get; set; }
+        [JsonIgnore]
+        public ImageVM Image { get; set; }
+        public string UserImageId { get; set; }
     }
 }
