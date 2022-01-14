@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Treningi.WebApp.Models.ImageModel>
+</p>
+<table class="table" id="table1">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageFile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <img src="@("~/Image/"+item.ImageName)" asp-append-version="true" width="250px" height="250px"/>
+                    @*@Html.DisplayFor(modelItem => item.ImageFile)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageId)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
