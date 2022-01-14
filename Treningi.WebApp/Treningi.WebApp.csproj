@@ -5,7 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Home\manifest.json" />
+    <None Remove="Views\Home\img\dish.png" />
+    <None Remove="Views\Home\img\icons\icon-128x128.png" />
+    <None Remove="Views\Home\img\icons\icon-144x144.png" />
+    <None Remove="Views\Home\img\icons\icon-152x152.png" />
+    <None Remove="Views\Home\img\icons\icon-192x192.png" />
+    <None Remove="Views\Home\img\icons\icon-384x384.png" />
+    <None Remove="Views\Home\img\icons\icon-512x512.png" />
+    <None Remove="Views\Home\img\icons\icon-72x72.png" />
+    <None Remove="Views\Home\img\icons\icon-96x96.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Home\img\dish.png" />
+    <Content Include="Views\Home\img\icons\icon-128x128.png" />
+    <Content Include="Views\Home\img\icons\icon-144x144.png" />
+    <Content Include="Views\Home\img\icons\icon-152x152.png" />
+    <Content Include="Views\Home\img\icons\icon-192x192.png" />
+    <Content Include="Views\Home\img\icons\icon-384x384.png" />
+    <Content Include="Views\Home\img\icons\icon-512x512.png" />
+    <Content Include="Views\Home\img\icons\icon-72x72.png" />
+    <Content Include="Views\Home\img\icons\icon-96x96.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,12 +58,6 @@
 
   <ItemGroup>
     <Folder Include="js\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Home\manifest.json" />
-    <None Include="wwwroot\manifest.json" />
-    <None Include="wwwroot\sw.js" />
   </ItemGroup>
 
 </Project>
