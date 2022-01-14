@@ -1,8 +1,5 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EmailService
 {
@@ -46,7 +43,8 @@ namespace EmailService
                     client.Authenticate(_emailConfig.UserName, _emailConfig.Password);
 
                     client.Send(mailMessage);
-                } catch
+                }
+                catch
                 {
                     throw;
                 }

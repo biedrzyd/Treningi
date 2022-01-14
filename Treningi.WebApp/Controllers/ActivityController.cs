@@ -1,16 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net.Http;
-using Microsoft.Extensions.Configuration;
-using Treningi.WebApp.Models;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using Treningi.WebApp.Models;
 
 namespace Treningi.WebApp.Controllers
 {
@@ -52,13 +51,13 @@ namespace Treningi.WebApp.Controllers
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     skiJumpersList = JsonConvert.DeserializeObject<List<ActivityVM>>(apiResponse);
-                    foreach(ActivityVM a in skiJumpersList.ToArray())
+                    foreach (ActivityVM a in skiJumpersList.ToArray())
                     {
                         if (a.CompetitorID != currentId)
                             skiJumpersList.Remove(a);
                     }
                     skiJumpersList.Sort((p, q) => p.hour.CompareTo(q.hour));
-                    skiJumpersList = skiJumpersList.OrderBy(x => ( getDayValue(x.day))).ToList();
+                    skiJumpersList = skiJumpersList.OrderBy(x => (getDayValue(x.day))).ToList();
                 }
             }
 

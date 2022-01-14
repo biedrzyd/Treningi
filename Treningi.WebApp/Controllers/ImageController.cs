@@ -2,9 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Treningi.Infrastructure.Repositories;
 using Treningi.WebApp.Models;
@@ -26,28 +24,28 @@ namespace Treningi.WebApp.Controllers
         // GET: Image
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Images.ToListAsync()); 
+            return View(await _context.Images.ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
-        { 
-            if(id == null)
+        {
+            if (id == null)
             {
                 return NotFound();
             }
             var imageModel = await _context.Images
                 .FirstOrDefaultAsync(m => m.ImageId == id);
-            if(imageModel == null)
+            if (imageModel == null)
             {
                 return NotFound();
             }
             return View(imageModel);
-                
+
         }
 
         // GET: Image/Create
         public IActionResult Create()
-        { 
+        {
             return View();
         }
 
@@ -82,14 +80,14 @@ namespace Treningi.WebApp.Controllers
             return View(imageModel);
         }
 
-/*        // GET: Image/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        { ... }
+        /*        // GET: Image/Delete/5
+                public async Task<IActionResult> Delete(int? id)
+                { ... }
 
-        // POST: Image/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        { ... }*/
+                // POST: Image/Delete/5
+                [HttpPost, ActionName("Delete")]
+                [ValidateAntiForgeryToken]
+                public async Task<IActionResult> DeleteConfirmed(int id)
+                { ... }*/
     }
 }

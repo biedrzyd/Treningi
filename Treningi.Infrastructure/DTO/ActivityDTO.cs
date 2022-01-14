@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Treningi.Infrastructure.DTO
+﻿namespace Treningi.Infrastructure.DTO
 {
     public class ActivityDTO
     {

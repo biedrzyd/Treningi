@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Treningi.Core.Repositories;
-
 using System.Linq;
+using System.Threading.Tasks;
 using Treningi.Core;
+using Treningi.Core.Repositories;
 
 namespace Treningi.Infrastructure.Repositories
 {

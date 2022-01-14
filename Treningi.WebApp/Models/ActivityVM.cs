@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Treningi.WebApp
+﻿namespace Treningi.WebApp
 {
     public class ActivityVM
     {

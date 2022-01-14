@@ -1,6 +1,10 @@
-﻿@model IEnumerable<Treningi.WebApp.CompetitorVM>
+﻿@model X.PagedList.IPagedList<Treningi.WebApp.CompetitorVM>
 @using Microsoft.AspNetCore.Identity
 @using System.Security.Principal;
+@using PagedList.Mvc;
+@using PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList;
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -9,31 +13,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ID)
+                @Html.DisplayNameFor(model => model.First().ID)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Forename)
+                @Html.DisplayNameFor(model => model.First().Forename)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Surname)
+                @Html.DisplayNameFor(model => model.First().Surname)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Country)
+                @Html.DisplayNameFor(model => model.First().Country)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date_of_birth)
+                @Html.DisplayNameFor(model => model.First().Date_of_birth)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Height)
+                @Html.DisplayNameFor(model => model.First().Height)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Weight)
+                @Html.DisplayNameFor(model => model.First().Weight)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CoachId)
+                @Html.DisplayNameFor(model => model.First().CoachId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                @Html.DisplayNameFor(model => model.First().Image)
             </th>
         </tr>
     </thead>
@@ -69,7 +73,7 @@
                         @Html.DisplayFor(modelItem => item.CoachId)
                     </td>
                     <td>
-                        <img src="@("~/Image/"+item.UserImageId+".jpg")" asp-append-version="true" width="250px" height="250px" />
+                        <img src="@("~/Image/"+item.UserImageId+".jpg")"  alt="Brak zdjęcia" onerror="this.onerror=null; this.src='/Image/default.jpg'"  asp-append-version="true" width="100px" height="100px" />
                     </td>
                     <td>
                         @{
@@ -92,6 +96,7 @@
     </tbody>
 </table>
 
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -110,4 +115,5 @@
             });
         });
     })
+
 </script>

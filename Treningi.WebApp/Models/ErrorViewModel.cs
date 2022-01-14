@@ -1,5 +1,3 @@
-using System;
-
 namespace Treningi.WebApp.Models
 {
     public class ErrorViewModel

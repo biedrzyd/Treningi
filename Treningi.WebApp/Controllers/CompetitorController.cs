@@ -2,19 +2,15 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Treningi.WebApp;
 using Treningi.WebApp.Models;
-
+using X.PagedList;
 namespace Treningi.WebApp.Controllers
 {
     public class CompetitorController : Controller
@@ -39,7 +35,7 @@ namespace Treningi.WebApp.Controllers
         {
             return ControllerContext.RouteData.Values["controller"].ToString();
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
             ViewBag.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (ViewBag.Id == null)
@@ -47,7 +43,7 @@ namespace Treningi.WebApp.Controllers
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = _jwtoken.GenerateJSONWebToken();
             List<CompetitorVM> skiJumpersList = new List<CompetitorVM>();
-            using (var httpClient = new HttpClient( new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }}) )
+            using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync(_restpath))
@@ -56,8 +52,9 @@ namespace Treningi.WebApp.Controllers
                     skiJumpersList = JsonConvert.DeserializeObject<List<CompetitorVM>>(apiResponse);
                 }
             }
-
-            return View(skiJumpersList);
+            var pageNumber = page ?? 1;
+            var pageSize = 10; //Show 10 rows every time
+            return View(skiJumpersList.ToPagedList(pageNumber, pageSize));
         }
 
         [Authorize(Roles = "Admin")]
@@ -66,7 +63,7 @@ namespace Treningi.WebApp.Controllers
             string _restpath = GetHostUrl().Content + CN();
             var tokenString = _jwtoken.GenerateJSONWebToken();
             CompetitorVM s = new CompetitorVM();
-            using (var httpClient = new HttpClient( new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }}) )
+            using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
             {
                 httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                 using (var response = await httpClient.GetAsync($"{_restpath}/{id}"))
@@ -85,7 +82,7 @@ namespace Treningi.WebApp.Controllers
             CompetitorVM sjResult = new CompetitorVM();
             try
             {
-                using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }}) )
+                using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
                 {
                     httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenString);
                     string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
@@ -94,7 +91,8 @@ namespace Treningi.WebApp.Controllers
                     {
                     }
                 }
-            } catch ( Exception e)
+            }
+            catch (Exception e)
             {
                 return View(e);
             }
@@ -115,8 +113,8 @@ namespace Treningi.WebApp.Controllers
                         string apiResponse = await response.Content.ReadAsStringAsync();
                     }
                 }
-            } 
-            catch (Exception e){ return View(e); }
+            }
+            catch (Exception e) { return View(e); }
             return RedirectToAction(nameof(Index));
         }
 

@@ -5,7 +5,7 @@ namespace Treningi.Core
 {
     public class Competitor
     {
-        public Competitor() {}
+        public Competitor() { }
         public int ID { get; set; }
         public string Forename { get; set; }
         public string Surname { get; set; }
@@ -15,5 +15,6 @@ namespace Treningi.Core
         public double Weight { get; set; }
         public string CoachId { get; set; }
         public ImageModel Image { get; set; }
+        public string UserImageId { get; set; }
     }
 }

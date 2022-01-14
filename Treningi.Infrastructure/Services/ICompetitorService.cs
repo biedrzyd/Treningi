@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Treningi.Infrastructure.Commands;
 using Treningi.Infrastructure.DTO;
@@ -12,7 +11,7 @@ namespace Treningi.Infrastructure.Services
         Task<CompetitorDTO> Get(int id);
         Task<IEnumerable<CompetitorDTO>> GetByFilter(string name, string country);
         Task<CompetitorDTO> Add(CreateCompetitor s);
-        Task<CompetitorDTO> Delete (int s);
+        Task<CompetitorDTO> Delete(int s);
         Task<CompetitorDTO> Update(UpdateCompetitor u);
     }
 }

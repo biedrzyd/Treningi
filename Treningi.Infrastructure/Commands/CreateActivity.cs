@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Treningi.Infrastructure.Commands
+﻿namespace Treningi.Infrastructure.Commands
 {
     public class CreateActivity
     {
@@ -14,7 +10,7 @@ namespace Treningi.Infrastructure.Commands
             exercise = w;
         }
 
-        public CreateActivity() {}
+        public CreateActivity() { }
         public int CompetitorID { get; set; }
         public string day { get; set; }
         public string hour { get; set; }

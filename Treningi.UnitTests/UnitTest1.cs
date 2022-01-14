@@ -1,8 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -105,7 +103,7 @@ namespace Treningi.UnitTests
             }));
 
             await _competitorService.Get(competitorId);
-            
+
             _competitorsRepositoryMock.Verify(x => x.GetAsync(It.IsAny<int>()), Times.Once());
         }
 

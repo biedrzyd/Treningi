@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EmailService
+﻿namespace EmailService
 {
     public class EmailConfiguration
     {

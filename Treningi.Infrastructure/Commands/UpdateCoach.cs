@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Treningi.Infrastructure.Commands
 {
@@ -20,7 +18,7 @@ namespace Treningi.Infrastructure.Commands
 
         }
         public int ID { get; set; }
-        public string Forename { get; set; }    
+        public string Forename { get; set; }
         public string Surname { get; set; }
         public DateTime DateBirth { get; set; }
     }
