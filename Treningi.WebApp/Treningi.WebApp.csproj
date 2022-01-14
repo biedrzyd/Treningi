@@ -60,4 +60,12 @@
     <Folder Include="js\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\fonts\Plain-Bold.woff2" />
+    <None Include="wwwroot\fonts\Plain-Light.woff2" />
+    <None Include="wwwroot\fonts\Plain-Regular.woff2" />
+  </ItemGroup>
+
 </Project>
