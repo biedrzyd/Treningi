@@ -6,7 +6,7 @@
 @using X.PagedList.Mvc.Core;
 @using X.PagedList;
 <p>
-    <a asp-action="Create">Nowy zawodnik</a>
+    <a asp-action="Create">Dodaj nowego zawodnika</a>
 </p>
 <input type="search" class="search" id="searchrec" placeholder="Wyszukaj zawodnika" />
 <table class="table" id="table1">
@@ -83,8 +83,10 @@
         }
     </tbody>
 </table>
-
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+<br />
+<br />
+<br />
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 

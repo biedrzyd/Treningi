@@ -124,10 +124,9 @@ namespace Treningi.WebApp.Controllers
             string _restpath = GetHostUrl().Content + CN();
 
             string messageBody = "Konto " + s.Forename + " " + s.Surname + " zostalo stworzone";
-            var message = new Message(new string[] { "mytrainingsapp@gmail.com" }, "Test email", "aaaaaaaaaaaa");
+            var message = new Message(new string[] { "mytrainingsapp@gmail.com" }, "Nowy użytkwonik", "tmp");
             message.Content = messageBody;
-            //TODO:
-            //_emailSender.SendEmail(message);
+            _emailSender.SendEmail(message);
             var tokenString = _jwtoken.GenerateJSONWebToken();
             string jsonString = System.Text.Json.JsonSerializer.Serialize(s);
             using (var httpClient = new HttpClient(new HttpClientHandler { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } }))
