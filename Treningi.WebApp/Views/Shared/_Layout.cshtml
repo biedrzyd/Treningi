@@ -58,9 +58,6 @@
     @RenderSection("Scripts", required: false)
     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
         <ul class="navbar-nav flex-grow-1">
-            @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Start</a>
-        </li>*@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Info</a>
             </li>
@@ -73,18 +70,12 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Activity" asp-action="Index">Zajęcia</a>
             </li>
-            @* Tajne dla roli "wazny" lub "zarzadca" *@
+            @* Tajne dla roli "Admin" *@
             @{
                 if (User.IsInRole("Admin"))
                 {
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="CreateRole">Dodaj rolę</a>
-                    </li>
-                }
-                else  //tylko wyswietl nieaktywną opcję
-                {
-                    <li class="nav-link text-dark">
-                        <span style="color:darkgray">*Materiały</span>
                     </li>
                 }
             }
@@ -97,12 +88,6 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Pokaż listę ról</a>
                     </li>
                 }
-                else  //tylko wyswietl nieaktywną opcję
-                {
-                    <li class="nav-link text-dark">
-                        <span style="color:darkgray">**Panel administracyjny</span>
-                    </li>
-                }
             }
 
             <li class="nav-item">
@@ -110,12 +95,10 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Zarejestruj się</a>
             </li>
 
-            @* Wylogowanie, Zalogowanie, Zalogowany user *@
             @if (SignInManager.IsSignedIn(User))
             {
 
                 <li class="nav-link text-dark">
-                    @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Witaj @User.Identity.Name</a>*@
                     Witaj @User.Identity.Name
                 </li>
                 <li class="nav-link text-dark">
