@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
 @{
-    ViewBag.Title = "All Roles";
+    ViewBag.Title = "Wszystkie role";
 }
-<h1>All Roles</h1>
+<h1>Wszystkie role</h1>
 @if (Model.Any())
 {
     @if (User.IsInRole("Admin"))
     {
-        <a class="btn btn-primary mb-3" style="width:auto" asp-action="CreateRole" asp-controller="administration">Add new role</a>
+        <a class="btn btn-primary mb-3" style="width:auto" asp-action="CreateRole" asp-controller="administration">Dodaj nową rolę</a>
     }
     foreach (var role in Model)
     {
@@ -25,18 +25,18 @@
                     <form asp-action="DeleteRole" asp-route-id="@role.Id" method="post">
                         <a asp-controller="Administration" asp-action="EditRole"
                            asp-route-id="@role.Id" class="btn btn-primary">
-                            Edit
+                            Edytuj
                         </a>
                         <span id="confirmDeleteSpan_@role.Id" style="display:none">
                             <span>Are you sure you want to delete?</span>
-                            <button type="submit" class="btn btn-danger">Yes</button>
+                            <button type="submit" class="btn btn-danger">Tak</button>
                             <a href="#" class="btn btn-primary"
-                               onclick="confirmDelete('@role.Id', false)">No</a>
+                               onclick="confirmDelete('@role.Id', false)">Nie</a>
                         </span>
 
                         <span id="deleteSpan_@role.Id">
                             <a href="#" class="btn btn-danger"
-                               onclick="confirmDelete('@role.Id', true)">Delete</a>
+                               onclick="confirmDelete('@role.Id', true)">Usuń</a>
                         </span>
                     </form>
                 }

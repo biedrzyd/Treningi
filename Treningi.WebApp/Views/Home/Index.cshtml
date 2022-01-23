@@ -5,14 +5,16 @@
 
     <link rel="manifest" href="/manifest.webmanifest" />
     <script>
-        //if browser support service worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js');
         };
     </script>
+
 </head>
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-
+    <h1 class="display-4">Strona główna</h1>
+    <p>Aplikacja -- plany treningowe</p>
+    <div id="mainphoto">
+        <img src="~/Image/larry-wheels.jpg" />
+    </div>
 </div>

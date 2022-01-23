@@ -6,38 +6,32 @@
 @using X.PagedList.Mvc.Core;
 @using X.PagedList;
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Nowy zawodnik</a>
 </p>
 <input type="search" class="search" id="searchrec" placeholder="Wyszukaj zawodnika" />
 <table class="table" id="table1">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.First().ID)
+                Imie
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Forename)
+                Nazwisko
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Surname)
+                Kraj pochodzenia
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Country)
+                Data urodzin
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Date_of_birth)
+                Wzrost
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Height)
+                Waga
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.First().Weight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().CoachId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.First().Image)
+                Zdjęcie profilowe
             </th>
         </tr>
     </thead>
@@ -48,9 +42,6 @@
             @if (User.IsInRole("Admin") || (User.IsInRole("Trener") && item.CoachId != null && item.CoachId.Equals(@ViewBag.Id)))
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ID)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Forename)
                     </td>
@@ -68,9 +59,6 @@
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Weight)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CoachId)
                     </td>
                     <td>
                         <img src="@("~/Image/"+item.UserImageId+".jpg")"  alt="Brak zdjęcia" onerror="this.onerror=null; this.src='/Image/default.jpg'"  asp-append-version="true" width="100px" height="100px" />

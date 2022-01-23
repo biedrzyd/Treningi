@@ -30,6 +30,13 @@ https://www.tooplate.com/view/2119-gymso-fitness
       font-style: normal;
   }
 
+    #mainphoto {
+        position: absolute;
+        left: 10px;
+        top: 10px;
+    }
+
+
   :root {
     --primary-color:        #f13a11;
     --white-color:          #ffffff;

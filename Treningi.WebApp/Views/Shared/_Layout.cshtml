@@ -18,6 +18,13 @@
     <link rel="stylesheet" href="~/css/tooplate-gymso-style.css">
     <link rel="manifest" href="~/manifest.json" />
 
+    <style>
+        #mypanel {
+            position: absolute;
+            top: 10%;
+            left: 3%;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -31,10 +38,10 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Strona główna</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Informacje</a>
                         </li>
                     </ul>
                 </div>
@@ -49,14 +56,14 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Treningi.WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - Treningi.WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Dominik Biedrzycki</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
-    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" id="mypanel">
         <ul class="navbar-nav flex-grow-1">
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Info</a>
@@ -65,12 +72,8 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Competitor" asp-action="Index">Lista Zawodników</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Coach" asp-action="Index">Lista Trenerów</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Activity" asp-action="Index">Zajęcia</a>
             </li>
-            @* Tajne dla roli "Admin" *@
             @{
                 if (User.IsInRole("Admin"))
                 {
@@ -79,8 +82,6 @@
                     </li>
                 }
             }
-
-            @* Panel administracyjny TYLKO dla roli "zarzadca" *@
             @{
                 if (User.IsInRole("Admin"))
                 {
@@ -89,7 +90,6 @@
                     </li>
                 }
             }
-
             <li class="nav-item">
                 @*<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="RegisterWithConfirm">Zarejestruj się</a>*@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Zarejestruj się</a>
@@ -113,9 +113,6 @@
                     <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Zaloguj się</a>
                 </li>
             }
-
-
-
 
         </ul>
     </div>
